@@ -1,0 +1,82 @@
+{
+  "name": "wavefront-visualizer",
+  "displayName": "Wavefront Visualizer",
+  "description": "3D visualization of concurrent activity wavefronts in AI operator schedules",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": ["Visualization", "Other"],
+  "activationEvents": [
+    "onLanguage:json",
+    "onCommand:wavefrontVisualizer.openVisualization"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "wavefrontVisualizer.openVisualization",
+        "title": "Open Wavefront Visualization",
+        "category": "Wavefront"
+      },
+      {
+        "command": "wavefrontVisualizer.loadSchedule",
+        "title": "Load Schedule File",
+        "category": "Wavefront"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "wavefrontVisualizer.loadSchedule",
+          "when": "resourceExtname == .json || resourceExtname == .yaml",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "wavefrontVisualizer.openVisualization"
+        },
+        {
+          "command": "wavefrontVisualizer.loadSchedule",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Wavefront Visualizer",
+      "properties": {
+        "wavefrontVisualizer.defaultRenderer": {
+          "type": "string",
+          "default": "WebGL",
+          "enum": ["WebGL", "Canvas"],
+          "description": "Default renderer for 3D visualization"
+        },
+        "wavefrontVisualizer.animationSpeed": {
+          "type": "number",
+          "default": 1.0,
+          "minimum": 0.1,
+          "maximum": 5.0,
+          "description": "Animation speed multiplier for wavefront progression"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "three": "^0.158.0",
+    "@types/three": "^0.158.3"
+  }
+}
